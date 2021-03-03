@@ -12,7 +12,7 @@ namespace E_Commerce_Test_API.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
+            // Look for any Users.
             if (context.Users.Any())
             {
                 return;   // DB has been seeded
