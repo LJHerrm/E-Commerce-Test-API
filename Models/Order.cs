@@ -11,8 +11,7 @@ namespace E_Commerce_Test_API.Models
         public decimal TotalCost { get; set; }
         public string DeliveryAddress { get; set; }
         public string DeliveryPhone { get; set; }
-        public int UserID { get; set; }
-        public ICollection<Product> ProductID { get; set; }
         public User User { get; set; }
+        public ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }
