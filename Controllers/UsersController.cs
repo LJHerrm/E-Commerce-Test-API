@@ -26,7 +26,7 @@ namespace E_Commerce_Test_API.Controllers
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();
-        }
+        } 
 
         // GET: api/Users/5
         [HttpGet("{id}")]
