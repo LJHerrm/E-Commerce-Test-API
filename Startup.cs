@@ -30,9 +30,6 @@ namespace E_Commerce_Test_API
             //Gets connection information from appsettings.json DefaultConnection field
             services.AddDbContext<StoreContext>(options =>
                options.UseNpgsql(_configuration.GetConnectionString("DefaultConnection")));
-               
-               //temporary in memory database for testing
-               //options.UseInMemoryDatabase("Users"));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
