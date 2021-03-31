@@ -19,6 +19,7 @@ namespace E_Commerce_Test_API.Controllers
         public UsersController(StoreContext context)
         {
             _context = context;
+            
         }
 
         // GET: api/Users
