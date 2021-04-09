@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using E_Commerce_Test_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 
 namespace E_Commerce_Test_API
 {
@@ -34,6 +35,12 @@ namespace E_Commerce_Test_API
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddControllersWithViews();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "my-app/";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +51,10 @@ namespace E_Commerce_Test_API
                 app.UseDeveloperExceptionPage();
             }
 
+            //Spa
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -53,6 +64,17 @@ namespace E_Commerce_Test_API
                 {
                     await context.Response.WriteAsync("Hello World!");
                 });
+            });
+
+            //Spa
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "my-app";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
             });
         }
     }
