@@ -18,6 +18,7 @@
     "E_Commerce_Test_API": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
+      "launchUrl": "api/Users",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
