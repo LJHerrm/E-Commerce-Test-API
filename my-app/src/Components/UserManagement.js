@@ -1,19 +1,40 @@
 ﻿import React from 'react';
 
-
-export default class UsersListPage extends React.Component {
+export default class UserManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             error: null,
             isLoaded: false,
-            users: []
+            users: [],
+            name: null,
+            role: null,
+            email: null,
+            newUserID: null
         };
     }
 
-    componentDidMount() {
+    updateName(event) {
+        this.setState({
+            name: event.target.value
+        });
+    }
+    updateRole(event) {
+        this.setState({
+            role: event.target.value
+        });
+    }
+    updateEmail(event) {
+        this.setState({
+            email: event.target.value
+        });
+    }
+    
+
+    //Send a get request to /api/users and store in users[]
+    GetAllUsers() {
         fetch("http://localhost:5000/api/Users")
-            .then(res => res.json())
+            .then(response => response.json())
             .then(
                 (result) => {
                     this.setState({
@@ -31,6 +52,28 @@ export default class UsersListPage extends React.Component {
                     });
                 }
             )
+    }
+
+    //Send a post request to /api/users and store the new ID in newUserID
+    AddNewUser() {
+        const postRequest = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'Name': this.state.Name,
+                'Role': this.state.Role,
+                'Email': this.state.Email,
+                'CreatedAt': Date().toLocaleString()})
+        };
+        fetch("http://localhost:5000/api/Users", postRequest)
+            .then(response => response.json())
+            .then(result => this.setState({ newUserID: result.UserID }));
+    }
+
+    componentDidMount() {
+
+        this.GetAllUsers();
+        
     }
 
     render() {

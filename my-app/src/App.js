@@ -7,7 +7,7 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import UsersListPage from './Components/UsersListPage.js';
+import UserManagement from './Components/UserManagement.js';
 
 export default function BasicRouter() {
     return (
@@ -18,7 +18,7 @@ export default function BasicRouter() {
                         <Link to="/">Home</Link>
                     </li>
                     <li>
-                        <Link to="/userslist">Users List</Link>
+                        <Link to="/admin/users">User Management Page</Link>
                     </li>
                     <li>
                         <Link to="/dashboard">Dashboard</Link>
@@ -38,8 +38,8 @@ export default function BasicRouter() {
                     <Route exact path="/">
                         <Home />
                     </Route>
-                    <Route path="/userslist">
-                        <UsersListPage />
+                    <Route path="/admin/users">
+                        <UserManagement />
                     </Route>
                     <Route path="/dashboard">
                         <Dashboard />

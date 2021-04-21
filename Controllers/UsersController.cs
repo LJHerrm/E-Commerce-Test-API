@@ -23,6 +23,7 @@ namespace E_Commerce_Test_API.Controllers
         }
 
         // GET: api/Users
+        //Get a list of all users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
@@ -30,6 +31,7 @@ namespace E_Commerce_Test_API.Controllers
         } 
 
         // GET: api/Users/5
+        //Get a specific user given a UserID
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
@@ -44,6 +46,7 @@ namespace E_Commerce_Test_API.Controllers
         }
 
         // PUT: api/Users/5
+        //Update a user given a UserID
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
@@ -75,6 +78,7 @@ namespace E_Commerce_Test_API.Controllers
         }
 
         // POST: api/Users
+        //Add a new user to the table
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
@@ -87,6 +91,7 @@ namespace E_Commerce_Test_API.Controllers
         }
 
         // DELETE: api/Users/5
+        //Delete a user given a UserID
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
