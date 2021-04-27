@@ -119,6 +119,7 @@ export default class UserManagement extends React.Component {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
+                'userID': this.state.currentUserID,
                 'Name': this.state.name,
                 'Role': this.state.role,
                 'Email': this.state.email,
@@ -135,7 +136,16 @@ export default class UserManagement extends React.Component {
         await this.showEditModal();
     }
     async DeleteUser() {
+        const deleteRequest = {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        };
 
+        await fetch('http://localhost:5000/api/Users/' + this.state.currentUserID, deleteRequest);
+
+        //Refresh the user list and close modal
+        await this.GetAllUsers();
+        await this.showDeleteModal();
     }
     componentDidMount() {
 
@@ -185,8 +195,8 @@ export default class UserManagement extends React.Component {
                                     <td> {user.role} </td>
                                     <td> {user.email} </td>
                                     <td> {user.createdAt} </td>
-                                    <td> <button onClick={e => { this.showEditModal(e); }}> Edit </button> </td>
-                                    <td> <button onClick={e => { this.showDeleteModal(e); }}> Delete </button> </td>
+                                    <td> <button onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID }) }}> Edit </button> </td>
+                                    <td> <button onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID }) }}> Delete </button> </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -202,7 +212,7 @@ export default class UserManagement extends React.Component {
                     </Modal>
                     <Modal onClose={this.showDeleteModal} show={this.state.showDelete}>
                         Delete User
-                        <button onClick={this.DeleteUser.bind(this)} > Delete </button>
+                        <button onClick={this.DeleteUser.bind(this)} > Delete User </button>
                     </Modal>
                </div>
             );
