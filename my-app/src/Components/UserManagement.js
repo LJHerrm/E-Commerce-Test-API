@@ -6,10 +6,13 @@ export default class UserManagement extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            show: false,
+            showAdd: false,
+            showEdit: false,
+            showDelete: false,
             error: null,
             isLoaded: false,
             users: [],
+            currentUserID: null,
             name: "",
             role: null,
             email: "",
@@ -18,14 +21,29 @@ export default class UserManagement extends React.Component {
         };
     }        
 
-    //set state to show/hide modal
-    showModal = e => {
+    //set state to show/hide each modal
+    showAddModal = e => {
         this.setState({
-            show: !this.state.show
+            showAdd: !this.state.showAdd
+        });
+    };
+    showEditModal = e => {
+        this.setState({
+            showEdit: !this.state.showEdit
+        });
+    };
+    showDeleteModal = e => {
+        this.setState({
+            showDelete: !this.state.showDelete
         });
     };
 
     //Handlers for updating states when forms are filled
+    updateCurrentUserID(event) {
+        this.setState({
+            currentUserID: event.target.value
+        });
+    }
     updateName(event) {
         this.setState({
             name: event.target.value
@@ -93,9 +111,32 @@ export default class UserManagement extends React.Component {
 
         //Refresh the user list and close modal
         await this.GetAllUsers();
-        await this.showModal();
+        await this.showAddModal();
     }
-    
+
+    async EditUser() {
+        const putRequest = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                'Name': this.state.name,
+                'Role': this.state.role,
+                'Email': this.state.email,
+            })
+        };
+
+        await fetch('http://localhost:5000/api/Users/' + this.state.currentUserID, putRequest);
+        //only used if we need to save part of the response
+        //const response = await fetch('http://localhost:5000/api/Users/{id}', putRequest);
+        //const data = await response.json();
+
+        //Refresh the user list and close modal
+        await this.GetAllUsers();
+        await this.showEditModal();
+    }
+    async DeleteUser() {
+
+    }
     componentDidMount() {
 
         this.GetAllUsers();
@@ -114,16 +155,16 @@ export default class UserManagement extends React.Component {
             return (
                 <div>
                     <h2> Users </h2>
-                    <button onClick = {e => { this.showModal(e); }}> Add New User </button>
+                    <button onClick = {e => { this.showAddModal(e); }}> Add New User </button>
 
-                    <Modal onClose = {this.showModal} show = {this.state.show} >
+                    <Modal onClose = {this.showAddModal} show = {this.state.showAdd} >
                         Name: 
                         <input type = "text" value = {this.state.name} onChange = {this.updateName.bind(this)} />
                         Role:
                         <input type = "text" value = {this.state.role} onChange = {this.updateRole.bind(this)} />
                         Email:
                         <input type = "text" value = {this.state.email} onChange = {this.updateEmail.bind(this)} />
-                        <button onClick = {this.AddNewUser.bind(this)} > Save </button>
+                        <button onClick = {this.AddNewUser.bind(this)} > Add User </button>
                     </Modal>
                     
                     <table>
@@ -144,12 +185,25 @@ export default class UserManagement extends React.Component {
                                     <td> {user.role} </td>
                                     <td> {user.email} </td>
                                     <td> {user.createdAt} </td>
-                                    <td> <button onClick={e => { this.showModal(e); }}> Edit </button> </td>
-                                    <td> <button onClick={e => { this.showModal(e); }}> Delete </button> </td>
+                                    <td> <button onClick={e => { this.showEditModal(e); }}> Edit </button> </td>
+                                    <td> <button onClick={e => { this.showDeleteModal(e); }}> Delete </button> </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
+                    <Modal onClose={this.showEditModal} show={ this.state.showEdit}>
+                        Name:
+                        <input type="text" value={this.state.name} onChange={this.updateName.bind(this)} />
+                        Role:
+                        <input type="text" value={this.state.role} onChange={this.updateRole.bind(this)} />
+                        Email:
+                        <input type="text" value={this.state.email} onChange={this.updateEmail.bind(this)} />
+                        <button onClick={this.EditUser.bind(this)} > Save Edits </button>
+                    </Modal>
+                    <Modal onClose={this.showDeleteModal} show={this.state.showDelete}>
+                        Delete User
+                        <button onClick={this.DeleteUser.bind(this)} > Delete </button>
+                    </Modal>
                </div>
             );
         }
