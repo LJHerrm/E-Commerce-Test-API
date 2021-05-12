@@ -24,11 +24,17 @@ export default class UserManagement extends React.Component {
     //set state to show/hide each modal
     showAddModal = e => {
         this.setState({
+            name: "",
+            role: null,
+            email: "",
             showAdd: !this.state.showAdd
         });
     };
     showEditModal = e => {
         this.setState({
+            name: "",
+            role: null,
+            email: "",
             showEdit: !this.state.showEdit
         });
     };
@@ -106,9 +112,9 @@ export default class UserManagement extends React.Component {
         this.setState({ newUserID: data.id });
 
         //Log new user ID to console
-        await console.log('New user added with ID:');
+        await console.log('New user added with ID: ');
         await console.log(this.state.newUserID);
-
+        
         //Refresh the user list and close modal
         await this.GetAllUsers();
         await this.showAddModal();
@@ -147,6 +153,7 @@ export default class UserManagement extends React.Component {
         await this.GetAllUsers();
         await this.showDeleteModal();
     }
+
     componentDidMount() {
 
         this.GetAllUsers();
@@ -154,7 +161,6 @@ export default class UserManagement extends React.Component {
     }
      
     render() {
-        
 
         const { error, isLoaded, users } = this.state;
         if (error) {
@@ -163,9 +169,9 @@ export default class UserManagement extends React.Component {
             return <div>Loading...</div>;
         } else {
             return (
+
                 <div>
-                    <h2> Users </h2>
-                    <button onClick = {e => { this.showAddModal(e); }}> Add New User </button>
+                    <h2> Users <button onClick={e => { this.showAddModal(e); }}> Add New User </button> </h2>
 
                     <Modal onClose = {this.showAddModal} show = {this.state.showAdd} >
                         Name: 
@@ -195,8 +201,8 @@ export default class UserManagement extends React.Component {
                                     <td> {user.role} </td>
                                     <td> {user.email} </td>
                                     <td> {user.createdAt} </td>
-                                    <td> <button onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID }) }}> Edit </button> </td>
-                                    <td> <button onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID }) }}> Delete </button> </td>
+                                    <td> <button onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </button> </td>
+                                    <td> <button onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </button> </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -211,7 +217,12 @@ export default class UserManagement extends React.Component {
                         <button onClick={this.EditUser.bind(this)} > Save Edits </button>
                     </Modal>
                     <Modal onClose={this.showDeleteModal} show={this.state.showDelete}>
-                        Delete User
+                        <h2>Really delete {this.state.email} ? </h2>
+                        <p> ID: {this.state.currentUserID} <br/>
+                         Name: {this.state.name} <br/>
+                         Role: {this.state.role} <br/>
+                         Email: {this.state.email} </p>
+                        
                         <button onClick={this.DeleteUser.bind(this)} > Delete User </button>
                     </Modal>
                </div>

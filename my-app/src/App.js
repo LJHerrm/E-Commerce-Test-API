@@ -8,6 +8,8 @@ import {
     Link
 } from "react-router-dom";
 import UserManagement from './Components/UserManagement.js';
+import AdminPage from './Components/Admin.js';
+import ProductManagement from './Components/ProductManagement.js';
 
 export default function BasicRouter() {
     return (
@@ -21,7 +23,7 @@ export default function BasicRouter() {
                         <Link to="/admin/users">User Management Page</Link>
                     </li>
                     <li>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to="/admin">Admin Home Page</Link>
                     </li>
                 </ul>
 
@@ -41,9 +43,13 @@ export default function BasicRouter() {
                     <Route path="/admin/users">
                         <UserManagement />
                     </Route>
-                    <Route path="/dashboard">
-                        <Dashboard />
+                    <Route path="/admin/products">
+                        <ProductManagement />
                     </Route>
+                    <Route path="/admin">
+                        <AdminPage />
+                    </Route>
+                    
                 </Switch>
             </div>
         </Router>
@@ -56,14 +62,6 @@ function Home() {
     return (
         <div>
             <h2>Home</h2>
-        </div>
-    );
-}
-
-function Dashboard() {
-    return (
-        <div>
-            <h2>Dashboard</h2>
         </div>
     );
 }
