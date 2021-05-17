@@ -1,6 +1,19 @@
 ﻿import React from 'react';
-import Modal from './Modal.js';
-
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import TableContainer from '@material-ui/core/TableContainer';
+import Paper from '@material-ui/core/Paper';
 export default class UserManagement extends React.Component {
 
     constructor(props) {
@@ -168,73 +181,150 @@ export default class UserManagement extends React.Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            return (
+            return(
 
                 <div>
-                    <h2> Users <button onClick={e => { this.showAddModal(e); }}> Add New User </button> </h2>
+                    <h2> Users <Button variant="outlined" color="primary" onClick={e => {this.showAddModal(e); }}>
+                        Add New User
+                               </Button>
+                    </h2>
+                        <Dialog open={this.state.showAdd} onClose={this.showAddModal} aria-labelledby="form-dialog-title">
+                            <DialogTitle id="form-dialog-title">Add a New User</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
 
-                    <Modal onClose = {this.showAddModal} show = {this.state.showAdd} >
-                        Name: 
-                        <input type = "text" value = {this.state.name} onChange = {this.updateName.bind(this)} />
-                        Role:
-                        <input type = "text" value = {this.state.role} onChange = {this.updateRole.bind(this)} />
-                        Email:
-                        <input type = "text" value = {this.state.email} onChange = {this.updateEmail.bind(this)} />
-                        <button onClick = {this.AddNewUser.bind(this)} > Add User </button>
-                    </Modal>
-                    
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>User ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Email</th>
-                                <th>Time/Date Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                </DialogContentText>
+                                <TextField
+                                    onChange={this.updateName.bind(this)}
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="Name"
+                                    type="name"
+                                    fullWidth
+                                />
+                                <TextField
+                                    onChange={this.updateRole.bind(this)}
+                                    margin="dense"
+                                    id="role"
+                                    label="Role"
+                                    type="role"
+                                    fullWidth
+                                />
+                                <TextField
+                                    onChange={this.updateEmail.bind(this)}
+                                    margin="dense"
+                                    id="email"
+                                    label="Email Address"
+                                    type="email"
+                                    fullWidth
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.showAddModal} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={this.AddNewUser.bind(this)} color="primary">
+                                    Submit
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+
+                    <TableContainer component={Paper} width="auto">
+                        <Table aria-label="simple table" style={{ width: "auto", tableLayout: "auto" }}>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell> User ID</TableCell>
+                                    <TableCell> Name</TableCell>
+                                    <TableCell align="right"> Role</TableCell>
+                                    <TableCell align="right"> Email</TableCell>
+                                    <TableCell align="right"> Time/Date Created</TableCell>
+                                <TableCell />
+                                <TableCell />
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
                             {users.map(user => (
-                                <tr>
-                                    <td> {user.userID} </td>
-                                    <td> {user.name} </td>
-                                    <td> {user.role} </td>
-                                    <td> {user.email} </td>
-                                    <td> {user.createdAt} </td>
-                                    <td> <button onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </button> </td>
-                                    <td> <button onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </button> </td>
-                                </tr>
+                                <TableRow>
+                                    <TableCell> {user.userID} </TableCell>
+                                    <TableCell> {user.name} </TableCell>
+                                    <TableCell align="right"> {user.role} </TableCell>
+                                    <TableCell align="right"> {user.email} </TableCell>
+                                    <TableCell align="right"> {user.createdAt} </TableCell>
+                                    <TableCell align="right"> <Button variant="outlined" color="primary" onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </Button> </TableCell>
+                                    <TableCell align="right"> <Button variant="outlined" color="primary" onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </Button> </TableCell>
+                                </TableRow>
                             ))}
-                        </tbody>
-                    </table>
-                    <Modal onClose={this.showEditModal} show={ this.state.showEdit}>
-                        Name:
-                        <input type="text" value={this.state.name} onChange={this.updateName.bind(this)} />
-                        Role:
-                        <input type="text" value={this.state.role} onChange={this.updateRole.bind(this)} />
-                        Email:
-                        <input type="text" value={this.state.email} onChange={this.updateEmail.bind(this)} />
-                        <button onClick={this.EditUser.bind(this)} > Save Edits </button>
-                    </Modal>
-                    <Modal onClose={this.showDeleteModal} show={this.state.showDelete}>
-                        <h2>Really delete {this.state.email} ? </h2>
-                        <p> ID: {this.state.currentUserID} <br/>
-                         Name: {this.state.name} <br/>
-                         Role: {this.state.role} <br/>
-                         Email: {this.state.email} </p>
-                        
-                        <button onClick={this.DeleteUser.bind(this)} > Delete User </button>
-                    </Modal>
-               </div>
-            );
-        }
+                        </TableBody>
+                    </Table>
+                    </TableContainer>
+
+                    <Dialog open={this.state.showEdit} onClose={this.showEditModal} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                            </DialogContentText>
+                            <TextField
+                                value={this.state.name}
+                                onChange={this.updateName.bind(this)}
+                                autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="Name"
+                                    type="name"
+                                    fullWidth
+                                />
+                            <TextField
+                                value={this.state.role}
+                                onChange={this.updateRole.bind(this)}
+                                margin="dense"
+                                id="role"
+                                label="Role"
+                                type="role"
+                                fullWidth
+                            />
+                            <TextField
+                                value={this.state.email}
+                                onChange={this.updateEmail.bind(this)}
+                                margin="dense"
+                                id="email"
+                                label="Email Address"
+                                type="email"
+                                fullWidth
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.showEditModal} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={this.EditUser.bind(this)} color="primary">
+                                Submit
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <Dialog open={this.state.showDelete} onClose={this.showDeleteModal} aria-labelledby="form-dialog-title">
+                        <DialogTitle id="form-dialog-title">Really Delete {this.state.email} ? </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                <p> ID: {this.state.currentUserID} <br />
+                                    Name: {this.state.name} <br />
+                                    Role: {this.state.role} <br />
+                                    Email: {this.state.email} <br />
+                                </p>
+                            </DialogContentText>    
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.showDeleteModal} color="primary">
+                                Cancel
+                            </Button>
+                            <Button onClick={this.DeleteUser.bind(this)} color="primary">
+                                Submit
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
+                 );
+               }
     }
 }
-
-/* <ul>
-    {users.map(user => (
-        <li key={user.userID}>
-            {user.name} {user.role} {user.email} {user.createdAt}
-        </li>
-    ))}
-</ul> */
