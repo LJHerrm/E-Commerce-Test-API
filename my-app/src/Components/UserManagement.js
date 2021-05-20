@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import './UserManagement.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,7 +7,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +14,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
+
 export default class UserManagement extends React.Component {
 
     constructor(props) {
@@ -183,8 +184,8 @@ export default class UserManagement extends React.Component {
         } else {
             return(
 
-                <div>
-                    <h2> Users <Button variant="outlined" color="primary" onClick={e => {this.showAddModal(e); }}>
+                <div id="top">
+                    <h2> Users <Button variant="contained" color="primary" onClick={e => {this.showAddModal(e); }}>
                         Add New User
                                </Button>
                     </h2>
@@ -231,7 +232,7 @@ export default class UserManagement extends React.Component {
                         </Dialog>
 
                     <TableContainer component={Paper} width="auto">
-                        <Table aria-label="simple table" style={{ width: "auto", tableLayout: "auto" }}>
+                        <Table aria-label="simple table" style={{ width: "auto", tableLayout: "auto", margin: "auto" }}>
                         <TableHead>
                             <TableRow>
                                 <TableCell> User ID</TableCell>
@@ -251,8 +252,8 @@ export default class UserManagement extends React.Component {
                                     <TableCell align="right"> {user.role} </TableCell>
                                     <TableCell align="right"> {user.email} </TableCell>
                                     <TableCell align="right"> {user.createdAt} </TableCell>
-                                    <TableCell align="right"> <Button variant="outlined" color="primary" onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </Button> </TableCell>
-                                    <TableCell align="right"> <Button variant="outlined" color="primary" onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </Button> </TableCell>
+                                    <TableCell align="right"> <Button variant="contained" color="primary" onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </Button> </TableCell>
+                                    <TableCell align="right"> <Button variant="contained" color="secondary" onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </Button> </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

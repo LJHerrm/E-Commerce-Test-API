@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Link } from "react-router-dom";
+import Link from '@material-ui/core/Link';
 
 export default class AdminPage extends React.Component {
 
@@ -28,9 +28,9 @@ export default class AdminPage extends React.Component {
             return (
                 <div>
                     <h2>Admin Page</h2>
-                    <Link to='/admin/users'>User Management Page</Link>
+                    <Link href='/admin/users'>User Management Page</Link>
                     <div></div>
-                    <Link to='/admin/products'>Product Management Page</Link>
+                    <Link href='/admin/products'>Product Management Page</Link>
                 </div>
             );
         }

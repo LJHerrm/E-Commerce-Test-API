@@ -1,30 +1,29 @@
 import './App.css';
 import React from 'react';
-import App from './App';
+
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    
 } from "react-router-dom";
 import UserManagement from './Components/UserManagement.js';
 import AdminPage from './Components/Admin.js';
 import ProductManagement from './Components/ProductManagement.js';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 
 export default function BasicRouter() {
     return (
         <Router>
             <div>
                 <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/admin/users">User Management Page</Link>
-                    </li>
-                    <li>
-                        <Link to="/admin">Admin Home Page</Link>
-                    </li>
+                    <Breadcrumbs>
+                        <Link color="inherit" href="/home">Home</Link>
+                        <Link href="/admin">Admin Home Page</Link>
+                        <Link href="/admin/users">User Management Page</Link>
+                        <Link href="/admin/products">Product Management Page</Link>
+                    </Breadcrumbs>
                 </ul>
 
                 <hr />
