@@ -25,12 +25,13 @@ export default class UserManagement extends React.Component {
             showDelete: false,
             error: null,
             isLoaded: false,
-            users: [],
-            currentUserID: null,
+            products: [],
+            currentProductID: null,
             name: "",
-            role: null,
-            email: "",
-            newUserID: null
+            shortDescription: "",
+            price: 0,
+            imageUrl: null,
+            newProductID: null
 
         };
     }
@@ -39,16 +40,18 @@ export default class UserManagement extends React.Component {
     showAddModal = e => {
         this.setState({
             name: "",
-            role: null,
-            email: "",
+            shortDescription: "",
+            price: "",
+            imagueUrl: null,
             showAdd: !this.state.showAdd
         });
     };
     showEditModal = e => {
         this.setState({
             name: "",
-            role: null,
-            email: "",
+            shortDescription: "",
+            price: "",
+            imageUrl: null,
             showEdit: !this.state.showEdit
         });
     };
@@ -59,9 +62,9 @@ export default class UserManagement extends React.Component {
     };
 
     //Handlers for updating states when forms are filled
-    updateCurrentUserID(event) {
+    updateCurrentProductID(event) {
         this.setState({
-            currentUserID: event.target.value
+            currentProductID: event.target.value
         });
     }
     updateName(event) {
@@ -69,27 +72,32 @@ export default class UserManagement extends React.Component {
             name: event.target.value
         });
     }
-    updateRole(event) {
+    updateShortDescription(event) {
         this.setState({
-            role: event.target.value
+            shortDescription: event.target.value
         });
     }
-    updateEmail(event) {
+    updatePrice(event) {
         this.setState({
-            email: event.target.value
+            price: event.target.value
+        });
+    }
+    updateImageUrl(event) {
+        this.setState({
+            imageUrl: event.target.value
         });
     }
 
 
-    //Send a get request to /api/users and store in users[]
-    GetAllUsers() {
-        fetch("http://localhost:5000/api/Users")
+    //Send a get request to /api/products and store in products[]
+    GetAllProducts() {
+        fetch("http://localhost:5000/api/Products")
             .then(response => response.json())
             .then(
                 (result) => {
                     this.setState({
                         isLoaded: true,
-                        users: result
+                        products: result
                     });
                 },
                 // Note: it's important to handle errors here
@@ -104,79 +112,81 @@ export default class UserManagement extends React.Component {
             )
     }
 
-    //Send a post request to /api/users and store the new ID in newUserID
+    //Send a post request to /api/products and store the new ID in newProductID
 
     //CreatedAt is currently disabled until it is figured out
     //'CreatedAt': Date().toLocaleString()
-    async AddNewUser() {
+    async AddNewProduct() {
 
         const postRequest = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 'Name': this.state.name,
-                'Role': this.state.role,
-                'Email': this.state.email,
+                'ShortDescription': this.state.shortDescription,
+                'Price': this.state.price,
+                'ImageUrl': this.state.imageUrl
 
             })
         };
 
-        const response = await fetch('http://localhost:5000/api/Users', postRequest);
+        const response = await fetch('http://localhost:5000/api/Products', postRequest);
         const data = await response.json();
-        this.setState({ newUserID: data.id });
+        this.setState({ newProductID: data.id });
 
-        //Log new user ID to console
-        await console.log('New user added with ID: ');
-        await console.log(this.state.newUserID);
+        //Log new product ID to console
+        await console.log('New product added with ID: ');
+        await console.log(this.state.newProductID);
 
-        //Refresh the user list and close modal
-        await this.GetAllUsers();
+        //Refresh the product list and close modal
+        await this.GetAllProducts();
         await this.showAddModal();
     }
 
-    async EditUser() {
+    async EditProduct() {
         const putRequest = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                'userID': this.state.currentUserID,
+                'ProductID': this.state.currentProductID,
                 'Name': this.state.name,
-                'Role': this.state.role,
-                'Email': this.state.email,
+                'ShortDescription': this.state.shortDescription,
+                'Price': this.state.price,
+                'ImageUrl': this.state.imageUrl
             })
         };
 
-        await fetch('http://localhost:5000/api/Users/' + this.state.currentUserID, putRequest);
+        await fetch('http://localhost:5000/api/Products/' + this.state.currentProductID, putRequest);
         //only used if we need to save part of the response
-        //const response = await fetch('http://localhost:5000/api/Users/{id}', putRequest);
+        //const response = await fetch('http://localhost:5000/api/Products/{id}', putRequest);
         //const data = await response.json();
 
         //Refresh the user list and close modal
-        await this.GetAllUsers();
+        await this.GetAllProducts();
         await this.showEditModal();
     }
-    async DeleteUser() {
+    async DeleteProduct() {
         const deleteRequest = {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
         };
 
-        await fetch('http://localhost:5000/api/Users/' + this.state.currentUserID, deleteRequest);
+        await fetch('http://localhost:5000/api/Products/' + this.state.currentProductID, deleteRequest);
 
         //Refresh the user list and close modal
-        await this.GetAllUsers();
+        await this.GetAllProducts();
         await this.showDeleteModal();
     }
 
     componentDidMount() {
 
-        this.GetAllUsers();
+        this.GetAllProducts();
 
     }
 
     render() {
 
-        const { error, isLoaded, users } = this.state;
+        const { error, isLoaded, products } = this.state;
         if (error) {
             return <div>Error: {error.message}</div>;
         } else if (!isLoaded) {
@@ -185,12 +195,12 @@ export default class UserManagement extends React.Component {
             return (
 
                 <div id="top">
-                    <h2> Users <Button variant="contained" color="primary" onClick={e => { this.showAddModal(e); }}>
-                        Add New User
+                    <h2> Products <Button variant="contained" color="primary" onClick={e => { this.showAddModal(e); }}>
+                        Add New Product
                                </Button>
                     </h2>
                     <Dialog open={this.state.showAdd} onClose={this.showAddModal} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Add a New User</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Add a New product</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
 
@@ -205,19 +215,27 @@ export default class UserManagement extends React.Component {
                                 fullWidth
                             />
                             <TextField
-                                onChange={this.updateRole.bind(this)}
+                                onChange={this.updateShortDescription.bind(this)}
                                 margin="dense"
-                                id="role"
-                                label="Role"
-                                type="role"
+                                id="shortDescription"
+                                label="Short Description"
+                                type="shortDescription"
                                 fullWidth
                             />
                             <TextField
-                                onChange={this.updateEmail.bind(this)}
+                                onChange={this.updatePrice.bind(this)}
                                 margin="dense"
-                                id="email"
-                                label="Email Address"
-                                type="email"
+                                id="price"
+                                label="Price"
+                                type="price"
+                                fullWidth
+                            />
+                            <TextField
+                                onChange={this.updateImageUrl.bind(this)}
+                                margin="dense"
+                                id="imageUrl"
+                                label="Image Url"
+                                type="imageUrl"
                                 fullWidth
                             />
                         </DialogContent>
@@ -225,7 +243,7 @@ export default class UserManagement extends React.Component {
                             <Button onClick={this.showAddModal} color="primary">
                                 Cancel
                                 </Button>
-                            <Button onClick={this.AddNewUser.bind(this)} color="primary">
+                            <Button onClick={this.AddNewProduct.bind(this)} color="primary">
                                 Submit
                                 </Button>
                         </DialogActions>
@@ -235,25 +253,27 @@ export default class UserManagement extends React.Component {
                         <Table aria-label="simple table" style={{ width: "auto", tableLayout: "auto", margin: "auto" }}>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell> User ID</TableCell>
+                                    <TableCell> Product ID</TableCell>
                                     <TableCell> Name</TableCell>
-                                    <TableCell align="right"> Role</TableCell>
-                                    <TableCell align="right"> Email</TableCell>
+                                    <TableCell> Short Description</TableCell>
+                                    <TableCell align="right"> Price</TableCell>
+                                    <TableCell align="right"> Image Url</TableCell>
                                     <TableCell align="right"> Time/Date Created</TableCell>
                                     <TableCell />
                                     <TableCell />
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {users.map(user => (
+                                {products.map(product => (
                                     <TableRow>
-                                        <TableCell> {user.userID} </TableCell>
-                                        <TableCell> {user.name} </TableCell>
-                                        <TableCell align="right"> {user.role} </TableCell>
-                                        <TableCell align="right"> {user.email} </TableCell>
-                                        <TableCell align="right"> {user.createdAt} </TableCell>
-                                        <TableCell align="right"> <Button variant="contained" color="primary" onClick={e => { this.showEditModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Edit </Button> </TableCell>
-                                        <TableCell align="right"> <Button variant="contained" color="secondary" onClick={e => { this.showDeleteModal(e); this.setState({ currentUserID: user.userID, name: user.name, role: user.role, email: user.email }) }}> Delete </Button> </TableCell>
+                                        <TableCell> {product.productID} </TableCell>
+                                        <TableCell> {product.name} </TableCell>
+                                        <TableCell> {product.shortDescription} </TableCell>
+                                        <TableCell align="right"> {product.price} </TableCell>
+                                        <TableCell align="right"> {product.imageUrl} </TableCell>
+                                        <TableCell align="right"> {product.createdAt} </TableCell>
+                                        <TableCell align="right"> <Button variant="contained" color="primary" onClick={e => { this.showEditModal(e); this.setState({ currentProductID: product.productID, name: product.name, shortDescription: product.shortDescription, price: product.price, imageUrl: product.imageUrl }) }}> Edit </Button> </TableCell>
+                                        <TableCell align="right"> <Button variant="contained" color="secondary" onClick={e => { this.showDeleteModal(e); this.setState({ currentproductID: product.productID, name: product.name, shortDescription: product.shortDescription, price: product.price, imageUrl: product.imageUrl }) }}> Delete </Button> </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -261,7 +281,7 @@ export default class UserManagement extends React.Component {
                     </TableContainer>
 
                     <Dialog open={this.state.showEdit} onClose={this.showEditModal} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Edit User</DialogTitle>
+                        <DialogTitle id="form-dialog-title">Edit Product</DialogTitle>
                         <DialogContent>
                             <DialogContentText>
                             </DialogContentText>
@@ -276,21 +296,30 @@ export default class UserManagement extends React.Component {
                                 fullWidth
                             />
                             <TextField
-                                value={this.state.role}
-                                onChange={this.updateRole.bind(this)}
+                                value={this.state.shortDescription}
+                                onChange={this.updateShortDescription.bind(this)}
                                 margin="dense"
-                                id="role"
-                                label="Role"
-                                type="role"
+                                id="shortDescription"
+                                label="Short Description"
+                                type="shortDescription"
                                 fullWidth
                             />
                             <TextField
-                                value={this.state.email}
-                                onChange={this.updateEmail.bind(this)}
+                                value={this.state.price}
+                                onChange={this.updatePrice.bind(this)}
                                 margin="dense"
-                                id="email"
-                                label="Email Address"
-                                type="email"
+                                id="price"
+                                label="Price"
+                                type="price"
+                                fullWidth
+                            />
+                            <TextField
+                                value={this.state.imageUrl}
+                                onChange={this.updateImageUrl.bind(this)}
+                                margin="dense"
+                                id="imageUrl"
+                                label="Image Url"
+                                type="imageUrl"
                                 fullWidth
                             />
                         </DialogContent>
@@ -298,20 +327,21 @@ export default class UserManagement extends React.Component {
                             <Button onClick={this.showEditModal} color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={this.EditUser.bind(this)} color="primary">
+                            <Button onClick={this.EditProduct.bind(this)} color="primary">
                                 Submit
                             </Button>
                         </DialogActions>
                     </Dialog>
 
                     <Dialog open={this.state.showDelete} onClose={this.showDeleteModal} aria-labelledby="form-dialog-title">
-                        <DialogTitle id="form-dialog-title">Really Delete {this.state.email} ? </DialogTitle>
+                        <DialogTitle id="form-dialog-title">Really Delete {this.state.name} ? </DialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                <p> ID: {this.state.currentUserID} <br />
+                                <p> ID: {this.state.currentProductID} <br />
                                     Name: {this.state.name} <br />
-                                    Role: {this.state.role} <br />
-                                    Email: {this.state.email} <br />
+                                    Short Description: {this.state.shortDescription} <br />
+                                    Price: {this.state.price} <br />
+                                    Image Url: {this.state.imageUrl} <br />
                                 </p>
                             </DialogContentText>
                         </DialogContent>
@@ -319,7 +349,7 @@ export default class UserManagement extends React.Component {
                             <Button onClick={this.showDeleteModal} color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={this.DeleteUser.bind(this)} color="primary">
+                            <Button onClick={this.DeleteProduct.bind(this)} color="primary">
                                 Submit
                             </Button>
                         </DialogActions>
