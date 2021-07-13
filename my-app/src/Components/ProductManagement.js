@@ -14,6 +14,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
+import { styled } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+const MyTableContainer = styled(TableContainer)({
+    width: 1350,
+
+});
 
 export default class UserManagement extends React.Component {
 
@@ -248,8 +255,8 @@ export default class UserManagement extends React.Component {
                                 </Button>
                         </DialogActions>
                     </Dialog>
-
-                    <TableContainer component={Paper} width="auto">
+                    <Grid container justify="center">
+                    <MyTableContainer component={Paper} width="auto">
                         <Table aria-label="simple table" style={{ width: "auto", tableLayout: "auto", margin: "auto" }}>
                             <TableHead>
                                 <TableRow>
@@ -278,8 +285,8 @@ export default class UserManagement extends React.Component {
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
-
+                    </MyTableContainer>
+                    </Grid>
                     <Dialog open={this.state.showEdit} onClose={this.showEditModal} aria-labelledby="form-dialog-title">
                         <DialogTitle id="form-dialog-title">Edit Product</DialogTitle>
                         <DialogContent>

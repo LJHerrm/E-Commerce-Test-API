@@ -16,9 +16,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import NavTabs from './Components/NavTabs.js';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+    search: {
         padding: '2px 4px',
         display: 'flex',
         alignItems: 'center',
@@ -46,9 +47,9 @@ export default function BasicRouter() {
         <Router>
             <div>
                 <ul>
-                    <Grid container direction="row" alignItems="center" spacing={2}>
+                    <Grid container direction="row" alignItems="center" spacing={2} justify="center">
                         <Grid item>
-                            <Paper component="form" className={classes.root}>
+                            <Paper component="form" className={classes.search}>
                                 <InputBase
                                     className={classes.input}
                                     placeholder="Search Products"
@@ -78,18 +79,9 @@ export default function BasicRouter() {
                         </Grid>
                     </Grid>
                 </ul>
-                
-                <hr />
-
-                <ul>
-                    <Breadcrumbs>
-                        <Link color="inherit" href="/home">Home</Link>
-                        <Link href="/admin">Admin Home Page</Link>
-                        <Link href="/admin/users">User Management Page</Link>
-                        <Link href="/admin/products">Product Management Page</Link>
-                    </Breadcrumbs>
-                </ul>
-                <hr />
+ 
+                <NavTabs />
+          
                 {/*
                 A <Switch> looks through all its children <Route>
                 elements and renders the first one whose path
@@ -101,13 +93,13 @@ export default function BasicRouter() {
                     <Route exact path="/">
                         <Home />
                     </Route>
-                    <Route path="/admin/users">
+                    <Route exact path="/admin/users">
                         <UserManagement />
                     </Route>
-                    <Route path="/admin/products">
+                    <Route exact path="/admin/products">
                         <ProductManagement />
                     </Route>
-                    <Route path="/admin">
+                    <Route exact path="/admin">
                         <AdminPage />
                     </Route>  
                 </Switch>
