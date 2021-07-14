@@ -41,6 +41,7 @@ function a11yProps(index) {
     };
 }
 
+//Not currently used because we changed the LinkTabs to Tabs for simplicity
 function LinkTab(props) {
     return (
         <Tab
@@ -71,6 +72,7 @@ export default function NavTabs() {
 
     return (
         <div className={classes.root}>
+
             <AppBar position="static">
                 <Tabs
                     variant="fullWidth"
@@ -78,24 +80,13 @@ export default function NavTabs() {
                     onChange={handleChange}
                     aria-label="nav tabs"
                 >
-                    <Tab component={Link} label="Admin Page" href="/home" to="/admin"{...a11yProps(0)} />
-                    <Tab component={Link} label="User Management" href="/admin/users" to="/admin/users" {...a11yProps(1)} />
-                    <Tab component={Link} label="Product Management" href="/admin/products" to="/admin/products" {...a11yProps(2)} />
-                    <Tab component={Link} label="Page Four" href="/" to="/home" {...a11yProps(3)} />
+                    <Tab component={Link} label="Home" href="/home" to="/home"{...a11yProps(0)} />
+                    <Tab component={Link} label="Admin Page" href="/home" to="/admin"{...a11yProps(1)} />
+                    <Tab component={Link} label="User Management" href="/admin/users" to="/admin/users" {...a11yProps(2)} />
+                    <Tab component={Link} label="Product Management" href="/admin/products" to="/admin/products" {...a11yProps(3)} />
                 </Tabs>
             </AppBar>
-            <TabPanel value={value} index={0}>
-                
-      </TabPanel>
-            <TabPanel value={value} index={1}>
-                
-      </TabPanel>
-            <TabPanel value={value} index={2}>
-                
-      </TabPanel>
-            <TabPanel value={value} index={3}>
-                Page Four
-      </TabPanel>
+            
         </div>
     );
 }

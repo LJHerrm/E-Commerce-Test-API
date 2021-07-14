@@ -189,7 +189,7 @@ export default class UserManagement extends React.Component {
         } else if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            return(
+            return (
 
                 <div id="top">
                     <h2> Users <Button variant="contained" color="primary" onClick={e => {this.showAddModal(e); }}> Add New User </Button>
@@ -332,7 +332,7 @@ export default class UserManagement extends React.Component {
                         </DialogActions>
                     </Dialog>
                 </div>
-                 );
+                );
                }
     }
 }

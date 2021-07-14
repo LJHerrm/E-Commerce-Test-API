@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserManagement from './Components/UserManagement.js';
 import AdminPage from './Components/Admin.js';
 import ProductManagement from './Components/ProductManagement.js';
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from '@material-ui/core/Link';
+import Home from './Components/Home.js';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -90,7 +89,7 @@ export default function BasicRouter() {
                 of them to render at a time
                 */}
                 <Switch>
-                    <Route exact path="/">
+                    <Route exact path="/home">
                         <Home />
                     </Route>
                     <Route exact path="/admin/users">
@@ -108,15 +107,6 @@ export default function BasicRouter() {
     );
 }
 
-// These functions act as placeholders until actual pages are made
-
-function Home() {
-    return (
-        <div>
-            <h2>Home</h2>
-        </div>
-    );
-}
 
 //Original pre-made React homepage, kept here for reference
 /*function App() {
