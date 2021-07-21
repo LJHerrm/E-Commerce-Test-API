@@ -81,8 +81,8 @@ export default function NavTabs() {
                     aria-label="nav tabs"
                 >
                     <Tab component={Link} label="Home" href="/home" to="/home"{...a11yProps(0)} />
-                    <Tab component={Link} label="Admin Page" href="/home" to="/admin"{...a11yProps(1)} />
-                    <Tab component={Link} label="User Management" href="/admin/users" to="/admin/users" {...a11yProps(2)} />
+                    <Tab component={Link} label="Products" href="/products" to="/products" {...a11yProps(1)} />
+                    <Tab component={Link} label="Admin Page" href="/home" to="/admin"{...a11yProps(2)} />   
                     <Tab component={Link} label="Product Management" href="/admin/products" to="/admin/products" {...a11yProps(3)} />
                 </Tabs>
             </AppBar>

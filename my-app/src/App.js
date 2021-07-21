@@ -2,10 +2,6 @@ import './App.css';
 import React from 'react';
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import UserManagement from './Components/UserManagement.js';
-import AdminPage from './Components/Admin.js';
-import ProductManagement from './Components/ProductManagement.js';
-import Home from './Components/Home.js';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
@@ -15,7 +11,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import UserManagement from './Components/UserManagement.js';
+import AdminPage from './Components/Admin.js';
+import ProductManagement from './Components/ProductManagement.js';
+import Home from './Components/Home.js';
 import NavTabs from './Components/NavTabs.js';
+import ProductList from './Components/ProductList.js';
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -100,7 +102,10 @@ export default function BasicRouter() {
                     </Route>
                     <Route exact path="/admin">
                         <AdminPage />
-                    </Route>  
+                    </Route>
+                    <Route exact path="/products">
+                        <ProductList />
+                    </Route>
                 </Switch>
             </div>
         </Router>
